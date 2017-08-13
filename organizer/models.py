@@ -1,14 +1,19 @@
+from django.core.urlresolvers import reverse
 from django.db import models
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=31, unique=True)
-    slug = models.SlugField(max_length=31, unique=True)
+    slug = models.SlugField(max_length=31, unique=True, help_text='A label for URL.config.')
 
     class Meta:
         ordering = ['name']
 
     def __str__(self):
         return self.name.title()
+
+    def get_absolute_url(self):
+        return reverse('organizer_tag_detail', kwargs={'slug':self.slug})
 
 
 class Startup(models.Model):
@@ -26,6 +31,9 @@ class Startup(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('organizer_startup_detail', kwargs={'slug':slug})
 
 
 class NewsLink(models.Model):
